@@ -1,22 +1,31 @@
 import './App.css';
 import {useState} from 'react';
+import TodoInput from './TodoInput';
+import TodoList from './TodoList';
  
 function App() {
+  const [todo, setTodo] = useState('');
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = () => {
+    if (todo !== '') {
+      setTodos([...todos, todo]);
+      setTodo('');
+    }
+  };
+
+  const deleteTodo = (text) => {
+    const newTodos = todos.filter((todo) => {
+      return todo !== text;
+    });
+    setTodos(newTodos);
+  };
+
   return (
     <div className="App">
       <h1>React Todo App</h1>
-      <div className="input-wrapper">
-        <input
-         type='text' 
-         name='todo'
-         value={todo}
-         placeholder='Create a new todo'
-         onChange={(e) => {
-          setTodo(e.target.value);
-         }}
-          />
-        <button className="add-button">Add</button>
-      </div>
+      <TodoInput todo={todo} setTodo={setTodo} addTodo={addTodo} />
+      <TodoList list={todos} remove={deleteTodo} />
     </div>
   );
 }
